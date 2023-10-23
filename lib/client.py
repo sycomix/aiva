@@ -18,13 +18,13 @@ def recv_packet_unicode(self):
     try:
         packet_text = self._connection.recv()
     except websocket.WebSocketTimeoutException as e:
-        raise TimeoutError('recv timed out (%s)' % e)
+        raise TimeoutError(f'recv timed out ({e})')
     except websocket.SSLError as e:
-        raise ConnectionError('recv disconnected by SSL (%s)' % e)
+        raise ConnectionError(f'recv disconnected by SSL ({e})')
     except websocket.WebSocketConnectionClosedException as e:
-        raise ConnectionError('recv disconnected (%s)' % e)
+        raise ConnectionError(f'recv disconnected ({e})')
     except socket.error as e:
-        raise ConnectionError('recv disconnected (%s)' % e)
+        raise ConnectionError(f'recv disconnected ({e})')
     try:
         encoded = six.b(packet_text)
     except (UnicodeEncodeError):

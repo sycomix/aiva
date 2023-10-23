@@ -8,13 +8,10 @@ ioid = basename(__file__)  # 'hello_rb.py'
 
 # another module method. To be passed on to other client (ruby)
 def passToOtherClient(msg):
-    # <function body here>
-    # the reply JSON payload.
-    reply = {
+    return {
         'input': 'Hello from Python from js.',
         'to': 'Hello.rb',
         'intent': 'sayHi',
         'from': msg.get('from'),
-        'hash': msg.get('hash')
+        'hash': msg.get('hash'),
     }
-    return reply

@@ -54,9 +54,14 @@ def wordvec_classify(input_str):
     org_convo = CONVO_CLASSES['exception']  # default
     for topic in CONVO_CLASSES:
         topic_convo = CONVO_CLASSES[topic]
-        local_high_score = max([
-            input_v.similarity(q_v) for q_v in topic_convo['queries_wordvecs']
-        ]) if topic_convo['queries_wordvecs'] else 0
+        local_high_score = (
+            max(
+                input_v.similarity(q_v)
+                for q_v in topic_convo['queries_wordvecs']
+            )
+            if topic_convo['queries_wordvecs']
+            else 0
+        )
         if (local_high_score > high_score and
                 local_high_score > MIN_SIM_THRESHOLD):
             high_score = local_high_score
@@ -82,18 +87,14 @@ def compose_response(convo):
 # then reply by predefined responses in data/convo_classes.json
 def classify_convo(input_str):
     convo = wordvec_classify(input_str)
-    response_payload = compose_response(convo)
-    return response_payload
+    return compose_response(convo)
 
 
 # module method for socketIO
 def classify(msg):
-    # the reply JSON payload.
-    reply = {
+    return {
         'output': classify_convo(msg.get('input')),
         'to': msg.get('from'),
         'from': ioid,
-        'hash': msg.get('hash')
+        'hash': msg.get('hash'),
     }
-    # the py client will send this to target <to>
-    return reply

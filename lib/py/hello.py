@@ -13,12 +13,9 @@ def foo(incoming):
 
 # module method. Feel free to add more
 def say_hi(msg):
-    # the reply JSON payload.
-    reply = {
+    return {
         'output': foo(msg.get('input')),
         'to': msg.get('from'),
         'from': ioid,
-        'hash': msg.get('hash')
+        'hash': msg.get('hash'),
     }
-    # the py client will send this to target <to>
-    return reply
